@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""重建《萌娃心声》全部汇总产物。
+"""重建《{PROJECT_NAME}》全部汇总产物。
 用法：python3 项目开发/重建汇总.py
 输入：剧集/EP*/图片提示词.md（唯一真源）
 输出：图片提示词索引.md、全剧资产总清单.md、全剧生成清单.xlsx、
@@ -8,6 +8,7 @@
 """
 import re, glob, os, sys, json
 
+PROJECT_NAME = '萌娃心声'  # ← 换新项目时只改这一行（标题/合集名会全部跟着变）
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 TAIL = 'soft film grain。'
@@ -73,7 +74,7 @@ PRIO = lambda v: ('A 必生' if ('身份基准' in v['type'] or v['type'] == '�
 
 
 def write_index(A, per_ep):
-    L = ['# 《萌娃心声》全剧图片提示词索引', '',
+    L = ['# 《{PROJECT_NAME}》全剧图片提示词索引', '',
          f'> 共 {len(per_ep)} 集、{len(A)} 张去重资产。画风：3D 国漫半写实｜16:9｜4K。', '',
          '| 集 | 本集新卡 | 清单行数 | 文件 |', '|---|---|---|---|']
     for ep, n_new, n_row, _ in per_ep:
@@ -84,7 +85,7 @@ def write_index(A, per_ep):
 def write_master(A):
     g = lambda t: [v for v in A if v['type'] == t]
     base, var, q, loc, prp = g('人物·身份基准'), g('人物·状态变体'), g('人物·Q版形态'), g('场景'), g('道具')
-    L = ['# 《萌娃心声》全剧资产总清单（去重版）', '',
+    L = ['# 《{PROJECT_NAME}》全剧资产总清单（去重版）', '',
          '> 由各集《图片提示词》逐卡合并：**同一资产只出现一次**。「首出集」= 卡正文所在那一集；「引用集」= 剧本里实际用到该卡的全部集。', '',
          '## 一、要生成多少张', '', '| 类别 | 数量 | 口径 |', '|---|---|---|',
          f'| 人物·身份基准 | **{len(base)}** | 必生：一人一张，定死长相 |',
@@ -113,7 +114,7 @@ def write_master(A):
 
 
 def write_promptbook(A):
-    L = ['# 《萌娃心声》全剧图片提示词合集（去重版 · 直接复制）', '',
+    L = ['# 《{PROJECT_NAME}》全剧图片提示词合集（去重版 · 直接复制）', '',
          f'> 全剧所有卡去重后的**完整可复制正文**，共 **{len(A)}** 张。`用于` 列出该卡在剧本里被引用的集。', '',
          '> 画风：3D 国漫半写实｜16:9 横屏｜4K｜渲染尾逐字 `3D Chinese animation style，semi-realistic，high-end CG，studio lighting，soft film grain`', '',
          '> 用法：找到要出图的那张 → 复制它的提示词整段 → 贴进出图工具。变体卡的【基准锁定】行说明这张脸沿用哪张身份卡。', '',
@@ -144,7 +145,7 @@ def write_promptbook(A):
              '人物·Q版形态': '03_Q版形态', '人物·群像': '03B_群像卡', '场景': '04_场景', '道具': '05_道具'}
     for t, fn in names.items():
         rows = [v for v in A if v['type'] == t]
-        parts = [f'# 《萌娃心声》{TITLES[t].split("· ")[-1]}（{len(rows)} 张）', '',
+        parts = [f'# 《{PROJECT_NAME}》{TITLES[t].split("· ")[-1]}（{len(rows)} 张）', '',
                  '> 取自全剧去重合集。复制每张的提示词整段直接用。', '']
         for v in rows:
             parts.append(f"## {v['id']} · {v['name']}\n")
@@ -159,7 +160,7 @@ def write_promptbook(A):
         d = Document()
         d.styles['Normal'].font.name = 'PingFang SC'
         d.styles['Normal'].font.size = Pt(10)
-        d.add_heading('《萌娃心声》全剧图片提示词合集（去重版）', 0)
+        d.add_heading('《{PROJECT_NAME}》全剧图片提示词合集（去重版）', 0)
         d.add_paragraph(f'共 {len(A)} 张，按「身份基准 → 状态变体 → Q版 → 场景 → 道具」排列。画风：3D 国漫半写实｜16:9｜4K。')
         for t in ['人物·身份基准', '人物·状态变体', '人物·Q版形态', '人物·群像', '场景', '道具']:
             rows = [v for v in A if v['type'] == t]

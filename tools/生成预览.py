@@ -9,11 +9,14 @@ import re, glob, os, html, json
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
-ORDER = ['人物·身份基准', '人物·状态变体', '人物·Q版形态', '场景', '道具']
+PROJECT_NAME = '萌娃心声'  # ← 换新项目时只改这一行（标题/合集名会全部跟着变）
+ORDER = ['人物·身份基准', '人物·状态变体', '人物·Q版形态', '人物·群像', '场景', '道具']
 
 
 def classify(cid, name):
     if '-C' in cid:
+        if ('群像' in name) or ('对照板' in name):
+            return '人物·群像'
         if 'Q版' in name:
             return '人物·Q版形态'
         if '身份' in name:
@@ -82,7 +85,7 @@ def build(A):
 
     chips = ''.join(f'<button class="chip" data-f="{k}">{k.split("·")[-1]} <em>{n[k]}</em></button>' for k in ORDER)
     return f'''<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8"><title>萌娃心声 · 提示词预览</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>{PROJECT_NAME} · 提示词预览</title>
 <style>
 :root{{color-scheme:light dark}}
 *{{box-sizing:border-box}}
@@ -115,7 +118,7 @@ input[type=search]{{flex:1 1 240px;min-width:180px;padding:8px 10px;border:1px s
 footer{{padding:0 16px 16px;font-size:11px;color:var(--muted-foreground,#9aa0a6)}}
 </style></head><body>
 <header>
-<h1>萌娃心声 · 全剧图片提示词预览</h1>
+<h1>{PROJECT_NAME} · 全剧图片提示词预览</h1>
 <div class="sub">共 {total} 张 · 人物基准 {n['人物·身份基准']} / 变体 {n['人物·状态变体']} / Q版 {n['人物·Q版形态']} / 场景 {n['场景']} / 道具 {n['道具']} · 全部已带 3D 画风锁（禁真人质感）</div>
 <div class="bar"><input type="search" id="q" placeholder="搜索编号 / 人物名 / 关键词，例如「李丝柔」「半扎」「金桂」"><button class="chip" id="all">全部 {total}</button>{chips}</div>
 </header>

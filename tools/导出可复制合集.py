@@ -10,6 +10,7 @@ import re, glob, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
+PROJECT_NAME = '萌娃心声'  # ← 换新项目时只改这一行（标题/合集名会全部跟着变）
 ORDER = ['人物·身份基准', '人物·状态变体', '人物·Q版形态', '人物·群像', '场景', '道具']
 LABEL_OF_FILE = {'人物·身份基准': '01_人物身份基准', '人物·状态变体': '02_人物状态变体',
                  '人物·Q版形态': '03_Q版形态', '人物·群像': '03B_群像卡', '场景': '04_场景', '道具': '05_道具'}
@@ -88,7 +89,7 @@ def block(v):
 def main():
     A = collect()
     n = {k: len([v for v in A if v['type'] == k]) for k in ORDER}
-    toc = ['萌娃心声 · 全剧图片提示词（可复制版）', DIV,
+    toc = [PROJECT_NAME + ' · 全剧图片提示词（可复制版）', DIV,
            f'共 {len(A)} 张：人物身份基准 {n["人物·身份基准"]}｜人物状态变体 {n["人物·状态变体"]}｜Q版 {n["人物·Q版形态"]}｜场景 {n["场景"]}｜道具 {n["道具"]}',
            '画幅 16:9｜4K｜3D 国漫半写实＋画风锁（禁真人质感）｜渲染尾逐字 3D Chinese animation style，semi-realistic，high-end CG，studio lighting，soft film grain。',
            '用法：找到要出的那张卡，从 ═ 线下方第一行选中到最后一行「负向提示词：…」整段复制；工具有单独负向框就只贴「负向提示词」那一段。',
@@ -111,7 +112,7 @@ def main():
     os.makedirs('可复制版', exist_ok=True)
     for k in ORDER:
         rows = [v for v in A if v['type'] == k]
-        parts = [f'萌娃心声 · {k}（{len(rows)} 张 · 可复制版）', DIV,
+        parts = [PROJECT_NAME + f' · {k}（{len(rows)} 张 · 可复制版）', DIV,
                  '画幅 16:9｜4K｜3D 国漫半写实＋画风锁（禁真人质感）', THIN]
         for v in rows:
             parts.append(block(v))

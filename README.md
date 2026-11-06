@@ -7,7 +7,7 @@
 1. **[工作流.md](工作流.md)** —— 完整流程：切集 → 资产盘点 → 分波出卡 → 登记合并 → 三层校验 → 一键派生 → 返工 SOP
 2. **[skills/duanju-batch-image-prompts/SKILL.md](skills/duanju-batch-image-prompts/SKILL.md)** —— 经验最浓的一条：批量生产调度、单卡返工（保脸/换装/换款）、背景板与群像规范、材质阶层体系
 3. [skills/short-drama-image-prompts/SKILL.md](skills/short-drama-image-prompts/SKILL.md) —— 出卡总纲（卡式骨架、REF 参考绑定）
-4. [tools/](tools/) —— 四个自动化脚本：重建汇总 / 导出可复制合集 / 导出兼容版 / 生成预览（改项目路径即复用）
+4. [tools/使用说明.md](tools/使用说明.md) —— 四个自动化脚本的复用方法：复制进新项目 `项目开发/`、改顶部 `PROJECT_NAME` 一行即可
 
 ## 六步总览
 
